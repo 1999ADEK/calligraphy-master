@@ -29,7 +29,7 @@ def read_gnt_in_directory(gnt_dirpath):
                     
 def gnt2npy(gnt_dirpath):
     print('Converting gnt files to npy files...')
-    os.chdir('./CASIA_data/')
+    os.chdir('./trainA/')
     for i, (img, tagcode) in enumerate(read_gnt_in_directory(gnt_dirpath)):
         np.save(f'hw{i:06}', (img, tagcode))
     print(f'Complete. Get {i} files in total.')

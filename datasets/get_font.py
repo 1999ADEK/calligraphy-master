@@ -18,7 +18,7 @@ def create_char_img(ch, font, size, x_offset=0, y_offset=0):
 def gen_dataset(filename, size=128):
     font = ImageFont.truetype(filename, size)
     char_list = get_char_list()
-    os.chdir('./font_data/')
+    os.chdir('./trainB/')
     print('Generating font dataset...')
     for i, ch in enumerate(char_list):
         int_unicode = int(ch, 16)
