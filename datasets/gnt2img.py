@@ -1,5 +1,6 @@
 import os
 import numpy as np
+from PIL import Image
 
 # Helper function from https://github.com/integeruser/CASIA-HWDB1.1-cnn/blob/master/src/utils.py
 def read_gnt_in_directory(gnt_dirpath):
@@ -30,8 +31,9 @@ def read_gnt_in_directory(gnt_dirpath):
 def gnt2npy(gnt_dirpath):
     print('Converting gnt files to npy files...')
     os.chdir('./trainA/')
-    for i, (img, tagcode) in enumerate(read_gnt_in_directory(gnt_dirpath)):
-        np.save(f'hw{i:06}', (img, tagcode))
+    for i, (img_array, tagcode) in enumerate(read_gnt_in_directory(gnt_dirpath)):
+        img = Image.fromarray(img_array)
+        img.save(f'hw{tagcode}.bmp')
     print(f'Complete. Get {i} files in total.')
     os.chdir('..')
     

@@ -7,5 +7,5 @@ unzip HWDB1.1tst_gnt.zip -d ./gnt_files
 
 # Convert gnt files to npy files
 cd ..
-python gnt2npy.py
+python gnt2img.py
 rm -rf ./trainA/gnt_files

@@ -23,8 +23,7 @@ def gen_dataset(filename, size=128):
     for i, ch in enumerate(char_list):
         int_unicode = int(ch, 16)
         img = create_char_img(chr(int_unicode), font, size)
-        img = np.array(img.getdata()).reshape((size, size)).astype('uint8')
-        np.save(f'font{i:04}', (img, int_unicode))
+        img.save(f'font{int_unicode}.bmp')
     print('Complete.')
     os.chdir('..')
 
