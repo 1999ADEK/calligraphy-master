@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageEnhance
 
 # Helper function from https://github.com/integeruser/CASIA-HWDB1.1-cnn/blob/master/src/utils.py
 def read_gnt_in_directory(gnt_dirpath):
@@ -28,14 +28,15 @@ def read_gnt_in_directory(gnt_dirpath):
                 for img, tagcode in samples(f):
                     yield img, tagcode
                     
-def gnt2npy(gnt_dirpath):
-    print('Converting gnt files to npy files...')
+def gnt2img(gnt_dirpath):
+    print('Converting gnt files to bmp files...')
     os.chdir('./trainA/')
     for i, (img_array, tagcode) in enumerate(read_gnt_in_directory(gnt_dirpath)):
-        img = Image.fromarray(img_array)
+        enhancer = ImageEnhance.Contrast(Image.fromarray(img_array))
+        img = enhancer.enhance(10)
         img.save(f'hw{tagcode}.bmp')
     print(f'Complete. Get {i} files in total.')
     os.chdir('..')
     
 if __name__ == '__main__':
-    gnt2npy('./gnt_files/')
+    gnt2img('./gnt_files/')
