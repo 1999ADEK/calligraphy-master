@@ -23,7 +23,7 @@ def gen_dataset(style, store_dir, size=128):
     font_dir = f'../{style}-fonts/'
     for filename in os.listdir(font_dir):
         print(f'Generating images using {filename}...')
-        font = ImageFont.truetype(font_dir+filename, size)
+        font = ImageFont.truetype(font_dir+filename, int(size*0.8))
         for i, ch in enumerate(char_list):
             int_unicode = int(ch, 16)
             img = create_char_img(chr(int_unicode), font, size)
