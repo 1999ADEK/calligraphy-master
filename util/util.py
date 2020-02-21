@@ -101,3 +101,58 @@ def mkdir(path):
     """
     if not os.path.exists(path):
         os.makedirs(path)
+
+def split_img(imagepath, m, n):
+    """split an image into m * n images
+    
+    Parameters:
+        imagepath (str) -- filepath of the image
+        m (int)        -- split the image into m parts horizontally
+        n (int)        -- split the image into n parts vertically
+    """
+    img = Image.open(imagepath)
+    w, h = img.size
+    new_w = w // m
+    new_h = h // n
+    for y in range(n):
+        for x in range(m):
+            yield img.crop((x*new_w, y*new_h, (x+1)*new_w, (y+1)*new_h))
+
+def split_and_save(imagepath, outputpath, m, n, size):
+    """split an image an save to desired directory
+    
+    Parameters:
+        imagepath (str)  -- filepath of the image
+        outputpath (str) -- directory to which the splitted images are saved
+        m (int)          -- split the image into m parts horizontally
+        n (int)          -- split the image into n parts vertically
+        size (tuple (int, int)) -- size of splitted images
+    """
+    image_name = os.path.splitext(os.path.basename(imagepath))[0]
+    for i, img in enumerate(split_img(imagepath, m, n)):
+        img.resize(size).save(f'{outputpath}{image_name}{i:03}.png')
+        
+def get_img(filepath):
+    """yield an image from the given directory
+    
+    Parameters:
+        filepath (str) -- filepath of the directory
+    """
+    for imagefile in os.listdir(filepath):
+        yield Image.open(filepath+imagefile)
+
+def combine_and_save(imagepath, outputpath, m, n, size=128):
+    """combine images in the given directory and save
+    
+    Parameters:
+        imagepath (str)  -- filepath of the images directory
+        outputpath (str) -- directory to which the combined image is saved
+        m (int)          -- max number of images to combined horizontally
+        n (int)          -- max number of images to combined vertically
+        size (tuple (int, int)) -- size of images to combined
+    """
+    new_img = Image.new('L', (size*m, size*n), 255)
+    x_offset, y_offset = 0, 0
+    for i, img in enumerate(get_img(imagepath)):
+        new_img.paste(img, ((i%m)*size, (i//m)*size))
+    new_img.save(f'{outputpath}combined.png')
