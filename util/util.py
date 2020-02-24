@@ -147,16 +147,19 @@ def split_and_save(imagepath, outputpath, m, n, size, order='horizontal'):
     for i, img in enumerate(split_img(imagepath, m, n, order)):
         img.resize(size).save(os.path.join(outputpath, f'{image_name}{i:03}.png'))
         
-def get_img(filepath):
+def get_img(filepath, isFake=True):
     """yield an image from the given directory
     
     Parameters:
         filepath (str) -- filepath of the directory
+        isFake (bool)  -- combine real or fake images in the directory (isFake == True then combine fake images)
     """
+    string = 'fake' if isFake else 'real'
     for imagefile in os.listdir(filepath):
-        yield Image.open(os.path.join(filepath, imagefile))
+        if string in imagefile:
+            yield Image.open(os.path.join(filepath, imagefile))
 
-def combine_and_save(imagepath, outputpath, m, n, size=128, order='horizontal'):
+def combine_and_save(imagepath, outputpath, m, n, size=128, order='horizontal', isFake=True):
     """combine images in the given directory and save
     
     Parameters:
@@ -167,13 +170,14 @@ def combine_and_save(imagepath, outputpath, m, n, size=128, order='horizontal'):
         size (tuple (int, int)) -- size of images to combined
         order (str)      -- combine the images from left to right, top to bottom ('horizontal')
                                                from top to bottom, right to left ('vertical')
+        isFake (bool)    -- combine real or fake images in the directory (isFake == True then combine fake images)
     """
     new_img = Image.new('L', (size*m, size*n), 255)
     if order == 'horizontal':
-        for i, img in enumerate(get_img(imagepath)):
+        for i, img in enumerate(get_img(imagepath, isFake)):
             new_img.paste(img, ((i%m) * size, (i//m) * size))
     elif order == 'vertical':
-        for i, img in enumerate(get_img(imagepath)):
+        for i, img in enumerate(get_img(imagepath, isFake)):
             new_img.paste(img, ((m - i//n - 1) * size, (i%n) * size))
     else:
         raise Exception(f'Expect order to be horizontal or vertical. Get {order} instead.')
