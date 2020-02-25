@@ -31,5 +31,4 @@ sh get_font_data.sh
 Change the ```--img_size``` in [get_font_data.sh](https://github.com/1999ADEK/calligraphy-master/blob/hwfont/datasets/get_font_data.sh) 
 to generate images with different size.
 ## Pretrained Model
-Pretrained model is provided [here](https://drive.google.com/drive/folders/144JQq5qp24E--jUvGx5_Pw4fp3Cf8LY9?usp=sharing). Feel free to do further 
-training based on this pretrained model!
+Pretrained model is provided [here](https://drive.google.com/drive/folders/144JQq5qp24E--jUvGx5_Pw4fp3Cf8LY9?usp=sharing). Feel free to do further training base on this pretrained model!
